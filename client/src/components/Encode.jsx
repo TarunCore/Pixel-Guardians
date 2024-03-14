@@ -170,15 +170,15 @@ const Encode = () => {
     messageContext.putImageData(message, 0, 0);
     document.querySelector(".binary").style.display = "block";
     // document.querySelector(".images .nulled").style.display = "block";
-    // document.querySelector(".images .message").style.display = "block";
-    document.querySelector(".images").style.display = "inline";
-    console.log("adsf");
-    document.querySelector(".message").style.display = "inline";
-    console.log("adsf2");
+    document.querySelector(".images .message").style.display = "block";
+    // document.querySelector(".images").style.display = "inline";
+    // console.log("adsf");
+    // document.querySelector(".message").style.display = "inline";
+    // console.log("adsf2");
   };
 
   return (
-    <div className="tab-pane active" id="encode">
+    <div className="tab-pane active" id="encode" style={{fontFamily:"Poppins"}}>
       <div>
         <h2 style={{fontFamily:"Poppins"}}>Encode message</h2>
         
@@ -198,13 +198,13 @@ const Encode = () => {
             {/* <input className="form-control" type="file" name="baseFile" onChange={previewEncodeImage} /> */}
           </div>
 
-          <div className="form-group">
+          <div className="form-group" style={{marginTop:"10px", marginBottom:"10px"}}>
           <Textarea aria-label="empty textarea"  className="form-control message" minRows="3" placeholder="Enter your message here" />;
             {/* <textarea className="form-control message" rows="3" placeholder="Enter your message here"></textarea> */}
           </div>
 
           <div className="form-group">
-          <Button className="encode btn btn-default pull-right"  onClick={encodeMessage} variant="contained">Encode</Button>
+          <Button className="encode btn btn-default pull-right"   onClick={encodeMessage} variant="contained">Encode</Button>
             {/* <button className="encode btn btn-default pull-right" onClick={encodeMessage}>Encode</button> */}
           </div>
         </form>
@@ -220,15 +220,15 @@ const Encode = () => {
       <div className="images" style={{ display: 'flex' }}>
         <div className="original" style={{ display: 'none' }}>
           <h3>Original</h3>
-          <canvas style={{maxWidth:"50%" }}></canvas>
+          <canvas style={{maxWidth:"60%" }}></canvas>
         </div>
         <div className="nulled" style={{ display: 'none'}}>
           <h3>Normalized</h3>
           <canvas></canvas>
         </div>
         <div className="message" style={{ display: 'none' }}>
-          <h3>Message hidden in image (right click <span className="glyphicon glyphicon-arrow-right"></span> save as)</h3>
-          <canvas style={{maxWidth:"50%" }}></canvas>
+          <h3>Steganography</h3>
+          <canvas style={{maxWidth:"60%" }}></canvas>
         </div>
       </div>
     </div>

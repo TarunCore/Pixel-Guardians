@@ -4,12 +4,16 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Home from './pages/Home'
 import Encode from './components/Encode'
+import Decode from './components/Decode'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-   <Encode></Encode>
+    <div style={{margin:"20px", display:"flex",justifyContent:"center", fontFamily:"Poppins"}}>
+
+      <Home></Home>
+    </div>
   )
 }
 
