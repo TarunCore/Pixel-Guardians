@@ -9,7 +9,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div style={{fontFamily:"Poppins", color:"white", background:"black", padding:"30px"}}>  
+    <div style={{fontFamily:"Poppins", color:"white", background:"black", padding:"30px", height:"100vh"}}>  
       <AppBar></AppBar>
       <Home></Home>
     </div>
