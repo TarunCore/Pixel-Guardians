@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contract Interaction</title>
+  <!-- Include Web3 library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.5.2/web3.min.js"></script>
+</head>
+<body>
+  <h1>Contract Interaction</h1>
+
+  <!-- Button to trigger the function call -->
+  <button onclick="getHashedData()">Get Hashed Data</button>
+
+  <script>
+    // Check if Web3 has been injected by the browser (MetaMask)
+    if (typeof window.ethereum !== 'undefined') {
+      const web3 = new Web3(window.ethereum);
+      // Request account access if needed
+      window.ethereum.request({ method: 'eth_requestAccounts' })
+        .then(function(accounts) {
+          console.log("Accounts:", accounts);
+        })
+        .catch(function(err) {
+          console.error("Error requesting accounts:", err);
+        });
+    } else {
+      console.error("MetaMask not detected. Please install MetaMask to interact with the contract.");
+    }
+
+    // Function to call dehashData and retrieve hashed data
+    function getHashedData() {
+      // Contract address and ABI
+      const contractAddress = "0x9074cFfa7c76b5fd1be474965C53ED442cD8F9F6";
+      const abi = [...]; // ABI of your contract
+
+      // Instantiate contract
+      const contract = new web3.eth.Contract(abi, contractAddress);
+
+      // Example hash value to retrieve data
+      const hashToRetrieve = "0x123..."; // Replace with the actual hash value
+
+      // Call dehashData function
+      contract.methods.dehashData(hashToRetrieve).call()
+        .then(function(data) {
+          console.log("Retrieved hashed data:", data);
+          // Display the retrieved data on the webpage or perform further processing
+          // Example: document.getElementById("hashedData").innerHTML = JSON.stringify(data);
+        })
+        .catch(function(err) {
+          console.error("Error retrieving hashed data:", err);
+        });
+    }
+  </script>
+</body>
+</html>
