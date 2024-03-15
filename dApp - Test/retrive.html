@@ -13,8 +13,8 @@
 
   <script>
     // Check if Web3 has been injected by the browser (MetaMask)
+    const web3 = new Web3(window.ethereum);
     if (typeof window.ethereum !== 'undefined') {
-      const web3 = new Web3(window.ethereum);
       // Request account access if needed
       window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(function(accounts) {
@@ -30,14 +30,167 @@
     // Function to call dehashData and retrieve hashed data
     function getHashedData() {
       // Contract address and ABI
-      const contractAddress = "0x9074cFfa7c76b5fd1be474965C53ED442cD8F9F6";
-      const abi = [...]; // ABI of your contract
+      const contractAddress = "0x90B176281B501b2505dF780f315788311be0720c";
+      const abi = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"name": "DataStored",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_model",
+				"type": "string"
+			}
+		],
+		"name": "hashAndStoreData",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "dehashData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gett",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "hashedData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
 
       // Instantiate contract
       const contract = new web3.eth.Contract(abi, contractAddress);
 
       // Example hash value to retrieve data
-      const hashToRetrieve = "0x123..."; // Replace with the actual hash value
+      const hashToRetrieve = "0x50936c93617039368746918c00a79ea8468081d18a853cde1013bf7bf85f1b16"; // Replace with the actual hash value
 
       // Call dehashData function
       contract.methods.dehashData(hashToRetrieve).call()
