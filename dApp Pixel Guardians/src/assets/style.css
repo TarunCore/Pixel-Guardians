@@ -1,0 +1,14 @@
+.upload-btn{
+    font-family: 'Poppins';
+    color: #fff;
+    font-size: medium;
+    padding: 9px 25px;
+    background-color: #0088a9;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all .3s ease 0s
+}
+.upload-btn:hover{
+    background-color: #0088a9cc
+}
