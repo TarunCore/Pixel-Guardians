@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contract Interaction</title>
+  <!-- Include Web3 library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.5.2/web3.min.js"></script>
+</head>
+<body>
+  <script>
+    // Check if Web3 has been injected by the browser (MetaMask)
+    if (typeof window.ethereum !== 'undefined') {
+      const web3 = new Web3(window.ethereum);
+      // Request account access if needed
+      window.ethereum.request({ method: 'eth_requestAccounts' })
+        .then(function(accounts) {
+          // Contract address and ABI
+          const contractAddress = "0xEf4A9B3aa3D7edA629EDEB6A97e56E1e5a26adB6";
+          const abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_model",
+				"type": "string"
+			}
+		],
+		"name": "hashAndStoreData",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "dehashData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gett",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "hashedData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+          // Instantiate contract
+          const contract = new web3.eth.Contract(abi, contractAddress);
+
+          // Example function call
+          contract.methods.gett().call()
+            .then(function(val) {
+              console.log("Value returned by gett():", val);
+            })
+            .catch(function(err) {
+              console.error("Error:", err);
+            });
+        })
+        .catch(function(err) {
+          console.error("Error requesting accounts:", err);
+        });
+    } else {
+      console.error("MetaMask not detected. Please install MetaMask to interact with the contract.");
+    }
+  </script>
+</body>
+</html>
