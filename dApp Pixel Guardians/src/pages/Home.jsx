@@ -1,14 +1,211 @@
 import React from "react";
 import "../assets/style.css";
 import { useState } from "react";
+import {Card} from "@mui/material"
 import CircularProgress from '@mui/material/CircularProgress';
+import {Web3} from "web3"
 const Home = () => {
   const [img, setImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false);
   const [blockStage, setBlockStage] = useState(false);
-
+  const [imgDetail, setImgDetail] = useState(null);
   const connectBlockChain = ()=>{
+    const web3 = new Web3(window.ethereum);
+    if (typeof window.ethereum !== 'undefined') {
+      // Request account access if needed
+      window.ethereum.request({ method: 'eth_requestAccounts' })
+        .then(function(accounts) {
+          console.log("Accounts:", accounts);
+        })
+        .catch(function(err) {
+          console.error("Error requesting accounts:", err);
+        });
+    } else {
+      console.error("MetaMask not detected. Please install MetaMask to interact with the contract.");
+    }
     
+    // Function to call dehashData and retrieve hashed data
+    function getHashedData() {
+      // Contract address and ABI
+      const contractAddress = "0x90B176281B501b2505dF780f315788311be0720c";
+      const abi = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"name": "DataStored",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_model",
+				"type": "string"
+			}
+		],
+		"name": "hashAndStoreData",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "dehashData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gett",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "hashedData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "author",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "model",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+      // Instantiate contract
+      const contract = new web3.eth.Contract(abi, contractAddress);
+
+      // Example hash value to retrieve data
+      const hashToRetrieve = "0x50936c93617039368746918c00a79ea8468081d18a853cde1013bf7bf85f1b16"; // Replace with the actual hash value
+
+      // Call dehashData function
+      contract.methods.dehashData(hashToRetrieve).call()
+        .then(function(data) {
+          console.log("Retrieved hashed data:", data);
+          let arr=[];
+          for(let i=0;i<4;i++){
+            arr.push(data[i]);
+          }
+          setImgDetail(arr);
+          // Display the retrieved data on the webpage or perform further processing
+          // Example: document.getElementById("hashedData").innerHTML = JSON.stringify(data);
+        })
+        .catch(function(err) {
+          console.error("Error retrieving hashed data:", err);
+        });
+    }
+    getHashedData()
   }
 
   const setLoading = ()=>{
@@ -47,6 +244,7 @@ const Home = () => {
 
   const decodeMessage = (event) => {
     setLoading();
+    connectBlockChain();
     const element = document.querySelector('#lod');
     console.log(element);
       element.scrollIntoView({ behavior: 'smooth' });
@@ -82,7 +280,8 @@ const Home = () => {
       output += String.fromCharCode(c);
     }
     const hashValue = output.substring(0, 66);
-    
+    const regex = /^[a-z0-9]$/
+    const isValidHash = regex.test(hashValue);
     setTimeout(()=>{
       setIsLoading(false);
       document.querySelector("#hashvalue").textContent = hashValue
@@ -133,6 +332,14 @@ const Home = () => {
 
       {blockStage==true && <div>
           <p>Connecting to block chain...</p>
+          {imgDetail && <Card variant="outlined" style={{minWidth:"400px", padding:"10px", background:"grey", color:"#fefefe"}}>
+          <div>
+            <p>{"Author: "+imgDetail[0]}</p>
+            <p>{"ID    : "+imgDetail[1]}</p>
+            <p>{"Date  : "+imgDetail[2]}</p>
+            <p>{"Model : "+imgDetail[3]}</p>
+          </div>
+            </Card>}
         </div>}
     </div>
 
